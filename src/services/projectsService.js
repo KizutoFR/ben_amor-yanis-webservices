@@ -1,5 +1,4 @@
 import Project from "#src/models/Projects";
-import queryBuilder from "#src/utils/mongoQueryBuilder";
 
 const exposeServices = {
 
@@ -13,17 +12,13 @@ const exposeServices = {
         }
     },
     findAllProjects: async (query)=>{
-        // là ici je vais manipuler ma query
-        // pour en faire un objet mongod 
-        // query {skills:'Typescript'}
-        const {
-            filter,
-            projection,
-            options
-        } = queryBuilder.getFindOptions({query})
-        
         try {
-            const   allProject = await Project.find(filter,projection,options)
+            const   allProject = await Project.find()
+            .sort({
+                createdAt: query.order === "desc" ? "desc" : "asc",
+            })
+            .limit(query.limit || 0)
+            .lean();
             return  allProject
         } catch (error) {
             throw new Error(error)

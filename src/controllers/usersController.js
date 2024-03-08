@@ -1,4 +1,5 @@
 import usersService from '#src/services/usersService'
+import client from "../redis/redis.js";
 
 
 const exposeController = {
@@ -8,13 +9,15 @@ const exposeController = {
             const { identifier } = req.params;
             const user = await usersService.findOneUser(identifier)
             if(!user) return res.sendStatus(404)
+            await client.SETEX(req.originalUrl, 40000, JSON.stringify(user));
             return res.json(user)
         } catch(e){
             console.log(e)
         }
     },
     allUsers:async (req,res)=>{
-        const allUsers = await usersService.findAllUsers()
+        const allUsers = await usersService.findAllUsers(req.query)
+        await client.SETEX(req.originalUrl, 40000, JSON.stringify(allUsers));
         return res.json(allUsers)
     },
     createUser:async (req,res)=>{

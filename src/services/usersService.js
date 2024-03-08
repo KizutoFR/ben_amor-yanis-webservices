@@ -12,9 +12,14 @@ const exposeServices = {
     findUserByRefreshToken:async ({refreshToken})=>{
        return User.findOne({refreshToken})
     },
-    findAllUsers: async ()=>{
+    findAllUsers: async (query)=>{
         try {
             const   allUsers = await User.find()
+            .sort({
+                createdAt: query.order === "desc" ? "desc" : "asc",
+            })
+            .limit(query.limit || 0)
+            .lean();
             return  allUsers
         } catch (error) {
             throw error

@@ -1,16 +1,19 @@
 import skillsService from '#src/services/skillsService'
+import client from "../redis/redis.js";
 
 
 const exposeController = {
 
     allSkills:async (req,res)=>{
-        const allSkills = await skillsService.findAllSkills()
+        const allSkills = await skillsService.findAllSkills(req.query)
+        await client.SETEX(req.originalUrl, 40000, JSON.stringify(allSkills));
         return res.json(allSkills)
     },
     oneSkill:async (req,res)=>{
         const {id} = req.params
         const oneSkill = await skillsService.findOneSkillById(id)
         if(!oneSkill) return res.sendStatus(404)
+        await client.SETEX(req.originalUrl, 40000, JSON.stringify(oneSkill));
         return res.json(oneSkill)
     },
     createSkill:async (req,res)=>{

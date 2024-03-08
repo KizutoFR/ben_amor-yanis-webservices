@@ -10,9 +10,14 @@ const exposeServices = {
             throw error
         }
     },
-    findAllSkills: async ()=>{
+    findAllSkills: async (query)=>{
         try {
             const   allSkills = await Skill.find()
+            .sort({
+                createdAt: query.order === "desc" ? "desc" : "asc",
+            })
+            .limit(query.limit || 0)
+            .lean();
             return  allSkills
         } catch (error) {
             throw error

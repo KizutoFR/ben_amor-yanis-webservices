@@ -1,11 +1,13 @@
 import express from 'express';
 import usersController from '#src/controllers/usersController'
 import authGard from '#src/middleware/authGard'
+import {cache} from '#src/middleware/cache'
+
 const router = express.Router();
 
-router.get('/', authGard.protect, usersController.allUsers);
+router.get('/', authGard.protect, cache, usersController.allUsers);
 
-router.get('/:identifier', authGard.protect, usersController.oneUser);
+router.get('/:identifier', authGard.protect, cache, usersController.oneUser);
 
 router.post('/',usersController.createUser);
 

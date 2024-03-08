@@ -1,24 +1,26 @@
 import projectsService from '#src/services/projectsService'
+import client from "../redis/redis.js";
 
 
 const exposeController = {
 
     allProjects:async (req,res)=>{
-        const {query} = req
-        const allProjects = await projectsService.findAllProjects(query)
+        const allProjects = await projectsService.findAllProjects(req.query)
+        await client.SETEX(req.originalUrl, 40000, JSON.stringify(allProjects));
         return res.json(allProjects)
     },
     oneProject:async (req,res)=>{
         const {params:{id}} = req
-        const oneCrea = await projectsService.findOneProject({id})
-        if(!oneCrea) return res.sendStatus(404)
-        return res.json(oneCrea)
+        const oneProject = await projectsService.findOneProject({id})
+        if(!oneProject) return res.sendStatus(404)
+        await client.SETEX(req.originalUrl, 40000, JSON.stringify(oneProject));
+        return res.json(oneProject)
     },
     createProject:async (req,res)=>{
         const {body}  = req
         try {
-                const newCrea = await projectsService.createProjects(body)     
-                return res.status(201).json(newCrea)
+                const newProject = await projectsService.createProjects(body)     
+                return res.status(201).json(newProject)
             } catch (error) {
                return res.sendStatus(400)
             // return res.json({error})

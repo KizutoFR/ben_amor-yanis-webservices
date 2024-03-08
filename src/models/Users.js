@@ -22,7 +22,7 @@ const userSchema = new Schema({
     select:false, 
   },  
   skills:[{
-    type: [Schema.Types.ObjectId],
+    type: Schema.Types.ObjectId,
     ref: "skills"
   }],
   roles:{

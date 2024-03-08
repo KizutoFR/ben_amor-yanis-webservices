@@ -11,11 +11,11 @@ const projectSchema = new Schema({
     type: String,
   },
   skills:[{
-    type: [Schema.Types.ObjectId],
+    type: Schema.Types.ObjectId,
     ref: "skills"
   }],
   members:[{
-    type: [Schema.Types.ObjectId],
+    type: Schema.Types.ObjectId,
     ref: "users",
   }],
 },

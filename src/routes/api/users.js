@@ -9,8 +9,8 @@ router.get('/:identifier', authGard.protect, usersController.oneUser);
 
 router.post('/',usersController.createUser);
 
-router.patch('/:identifier', authGard.protect, usersController.updateUser);
+router.patch('/:identifier', authGard.protect, authGard.isAdmin, usersController.updateUser);
 
-router.delete('/:identifier', authGard.protect, usersController.deleteUser);
+router.delete('/:identifier', authGard.protect, authGard.isAdmin, usersController.deleteUser);
 
 export default router;

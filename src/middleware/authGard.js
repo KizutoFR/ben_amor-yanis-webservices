@@ -14,6 +14,7 @@ const exposeMiddleware = {
             const cleanAccess = accessToken.slice(7, accessToken.length);
             try {
                 const verify = verifyJwt(cleanAccess)
+                req.user= verify
                 return next()
             } catch (error) {
                 console.log(error.message)
@@ -22,6 +23,15 @@ const exposeMiddleware = {
         }
         return res.sendStatus(400)
         
+    },
+    isAdmin:async (req,res,next)=>{
+        const user  = req.user;
+
+        if(user.roles==="admin") {
+                return next()
+        } else {
+            return res.status(401).send('You dont have the right permissions')
+        }
     }
 }
 

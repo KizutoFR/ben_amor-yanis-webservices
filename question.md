@@ -5,6 +5,9 @@
 C'est a cause des CORS. Firefox impose des restrictions CORS plus strictes que Postman.
 
 # NGINX/APACHE
-Les serveur apache on Nginx permet de faire du reverse proxy, soit gérer un grand nombre de requetes, de plus ils offrent des securité contre les attaques DDOS
+Apache et  Nginx permettent de faire du reverse proxy, de gerer un grand nombre de requetes, ainsi que d'offrir une securité contre les attaques DDOS
 
 # PERFORMANCES
+- Cache 
+- Tests
+- Compression de données
